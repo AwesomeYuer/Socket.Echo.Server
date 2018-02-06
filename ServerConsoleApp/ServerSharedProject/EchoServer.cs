@@ -29,9 +29,9 @@
                             );
             listener.Bind(localPoint);
             listener.Listen(5);
-            AcceptSocketAsyc(listener);
+            AcceptSocketAsync(listener);
         }
-        private void AcceptSocketAsyc(Socket listener)
+        private void AcceptSocketAsync(Socket listener)
         {
             var acceptSocketAsyncEventArgs = new SocketAsyncEventArgs();
             acceptSocketAsyncEventArgs.Completed += acceptSocketAsyncEventArgs_AcceptOneCompleted;
@@ -43,27 +43,13 @@
             e.Completed -= acceptSocketAsyncEventArgs_AcceptOneCompleted;
             var client = e.AcceptSocket;
             var listener = sender as Socket;
-            AcceptSocketAsyc(listener);
+            AcceptSocketAsync(listener);
+            Console.WriteLine("Accepted");
             var handler = new SocketAsyncDataHandler<T>
                                     (
                                         client
                                         , _socketID++
                                     );
-            //handler.StartReceiveData
-            //            (
-            //                1
-            //                , (x, y, z) =>
-            //                {
-            //                    //var s = Encoding.UTF8.GetString(y);
-            //                    ////Console.WriteLine("SocketID: {1}{0}Length: {2}{0}Data: {2}", "\r\n", x.SocketID, y.Length ,s);
-            //                    //Console.Write(s);
-            //                    if (_onReceivedDataProcessAction != null)
-            //                    {
-            //                        _onReceivedDataProcessAction(x, y);
-            //                    }
-            //                    return true;
-            //                }
-            //            );
             handler.StartReceiveWholeDataPackets
                                 (
                                    

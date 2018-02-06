@@ -3,33 +3,91 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerConsoleApp", "ServerConsoleApp\ServerConsoleApp\ServerConsoleApp.csproj", "{D334F830-4AE4-4A08-8226-C9CDF3BFE3F4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10.Server", "10.Server", "{CACAEC44-C819-4E48-A814-93A7BAEC4298}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareClassLibrary", "ShareClassLibrary\ShareClassLibrary.csproj", "{84D9748A-489F-4282-9E94-7FC5E017F336}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3BC50568-C8C8-46F1-85CE-BA24207F9991}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientConsoleApp", "ClientConsoleApp\ClientConsoleApp.csproj", "{A2C3A8E3-DDEC-47EF-8634-2DD7579199A5}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ServerSharedProject", "ServerConsoleApp\ServerSharedProject\ServerSharedProject.shproj", "{3F6FEEE0-0473-441F-A073-889503EC7710}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerConsoleApp.Core", "ServerConsoleApp\ServerConsoleApp.Core\ServerConsoleApp.Core.csproj", "{DCFC16EF-D6FE-45AC-8CD7-B06F888515A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00.Share", "00.Share", "{3A014254-FA9C-40CE-A61A-DA3173B64B6A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ShareClassLibrarySharedProject", "ShareClassLibrary\ShareClassLibrarySharedProject\ShareClassLibrarySharedProject.shproj", "{1BF4FDA8-A439-4F5A-A2FC-883C00D695FE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShareClassLibrary.Standard", "ShareClassLibrary\ShareClassLibrary.Standard\ShareClassLibrary.Standard.csproj", "{64D7E371-D02B-4875-AD38-BA58CB6D9EE3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{7D6F55B0-9625-42A6-8F7C-73A97F61EC03}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20.Client", "20.Client", "{8D0DC64E-1D23-411C-BBB3-DC2313454C0F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientConsoleApp.Core", "ClientConsoleApp\ClientConsoleApp.Core\ClientConsoleApp.Core.csproj", "{C64B099E-E8CE-4591-8A2A-1369E7E39C79}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{FA048837-CBF1-454F-A6F8-CD422F205C15}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ClientSharedProject", "ClientConsoleApp\ClientSharedProject\ClientSharedProject.shproj", "{E2A49F80-5E62-414D-BF57-8E1802B144A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerConsoleApp.Framework", "ServerConsoleApp\ServerConsoleApp.Framework\ServerConsoleApp.Framework.csproj", "{87C925F5-1925-4C3F-BC20-5BAEE076B998}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareClassLibrary.Framework", "ShareClassLibrary\ShareClassLibrary.Framework\ShareClassLibrary.Framework.csproj", "{F4CA26E3-3EBA-4FA3-BA81-41EAC754FEF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientConsoleApp.Framework", "ClientConsoleApp\ClientConsoleApp.Framework\ClientConsoleApp.Framework.csproj", "{53AB334D-022F-485E-A755-FE59B38DB953}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		ShareClassLibrary\ShareClassLibrarySharedProject\ShareClassLibrarySharedProject.projitems*{1bf4fda8-a439-4f5a-a2fc-883c00d695fe}*SharedItemsImports = 13
+		ServerConsoleApp\ServerSharedProject\ServerSharedProject.projitems*{3f6feee0-0473-441f-a073-889503ec7710}*SharedItemsImports = 13
+		ClientConsoleApp\ClientSharedProject\ClientSharedProject.projitems*{53ab334d-022f-485e-a755-fe59b38db953}*SharedItemsImports = 4
+		ServerConsoleApp\ServerSharedProject\ServerSharedProject.projitems*{87c925f5-1925-4c3f-bc20-5baee076b998}*SharedItemsImports = 4
+		ClientConsoleApp\ClientSharedProject\ClientSharedProject.projitems*{e2a49f80-5e62-414d-bf57-8e1802b144a8}*SharedItemsImports = 13
+		ShareClassLibrary\ShareClassLibrarySharedProject\ShareClassLibrarySharedProject.projitems*{f4ca26e3-3eba-4fa3-ba81-41eac754fef7}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D334F830-4AE4-4A08-8226-C9CDF3BFE3F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D334F830-4AE4-4A08-8226-C9CDF3BFE3F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D334F830-4AE4-4A08-8226-C9CDF3BFE3F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D334F830-4AE4-4A08-8226-C9CDF3BFE3F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{84D9748A-489F-4282-9E94-7FC5E017F336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84D9748A-489F-4282-9E94-7FC5E017F336}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84D9748A-489F-4282-9E94-7FC5E017F336}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84D9748A-489F-4282-9E94-7FC5E017F336}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2C3A8E3-DDEC-47EF-8634-2DD7579199A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2C3A8E3-DDEC-47EF-8634-2DD7579199A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2C3A8E3-DDEC-47EF-8634-2DD7579199A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2C3A8E3-DDEC-47EF-8634-2DD7579199A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCFC16EF-D6FE-45AC-8CD7-B06F888515A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCFC16EF-D6FE-45AC-8CD7-B06F888515A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCFC16EF-D6FE-45AC-8CD7-B06F888515A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCFC16EF-D6FE-45AC-8CD7-B06F888515A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64D7E371-D02B-4875-AD38-BA58CB6D9EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64D7E371-D02B-4875-AD38-BA58CB6D9EE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64D7E371-D02B-4875-AD38-BA58CB6D9EE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64D7E371-D02B-4875-AD38-BA58CB6D9EE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C64B099E-E8CE-4591-8A2A-1369E7E39C79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C64B099E-E8CE-4591-8A2A-1369E7E39C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C64B099E-E8CE-4591-8A2A-1369E7E39C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C64B099E-E8CE-4591-8A2A-1369E7E39C79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87C925F5-1925-4C3F-BC20-5BAEE076B998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87C925F5-1925-4C3F-BC20-5BAEE076B998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87C925F5-1925-4C3F-BC20-5BAEE076B998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87C925F5-1925-4C3F-BC20-5BAEE076B998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4CA26E3-3EBA-4FA3-BA81-41EAC754FEF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4CA26E3-3EBA-4FA3-BA81-41EAC754FEF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4CA26E3-3EBA-4FA3-BA81-41EAC754FEF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4CA26E3-3EBA-4FA3-BA81-41EAC754FEF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53AB334D-022F-485E-A755-FE59B38DB953}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53AB334D-022F-485E-A755-FE59B38DB953}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53AB334D-022F-485E-A755-FE59B38DB953}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53AB334D-022F-485E-A755-FE59B38DB953}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3BC50568-C8C8-46F1-85CE-BA24207F9991} = {CACAEC44-C819-4E48-A814-93A7BAEC4298}
+		{3F6FEEE0-0473-441F-A073-889503EC7710} = {3BC50568-C8C8-46F1-85CE-BA24207F9991}
+		{DCFC16EF-D6FE-45AC-8CD7-B06F888515A2} = {CACAEC44-C819-4E48-A814-93A7BAEC4298}
+		{1BF4FDA8-A439-4F5A-A2FC-883C00D695FE} = {7D6F55B0-9625-42A6-8F7C-73A97F61EC03}
+		{64D7E371-D02B-4875-AD38-BA58CB6D9EE3} = {3A014254-FA9C-40CE-A61A-DA3173B64B6A}
+		{7D6F55B0-9625-42A6-8F7C-73A97F61EC03} = {3A014254-FA9C-40CE-A61A-DA3173B64B6A}
+		{C64B099E-E8CE-4591-8A2A-1369E7E39C79} = {8D0DC64E-1D23-411C-BBB3-DC2313454C0F}
+		{FA048837-CBF1-454F-A6F8-CD422F205C15} = {8D0DC64E-1D23-411C-BBB3-DC2313454C0F}
+		{E2A49F80-5E62-414D-BF57-8E1802B144A8} = {FA048837-CBF1-454F-A6F8-CD422F205C15}
+		{87C925F5-1925-4C3F-BC20-5BAEE076B998} = {CACAEC44-C819-4E48-A814-93A7BAEC4298}
+		{F4CA26E3-3EBA-4FA3-BA81-41EAC754FEF7} = {3A014254-FA9C-40CE-A61A-DA3173B64B6A}
+		{53AB334D-022F-485E-A755-FE59B38DB953} = {8D0DC64E-1D23-411C-BBB3-DC2313454C0F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94BF3148-4FA4-43DA-A49A-1E3544AA38A3}

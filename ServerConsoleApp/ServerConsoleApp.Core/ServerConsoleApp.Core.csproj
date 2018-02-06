@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <Import Project="..\ServerSharedProject\ServerSharedProject.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ShareClassLibrary\ShareClassLibrary.Standard\ShareClassLibrary.Standard.csproj" />
+  </ItemGroup>
+
+  
+
+</Project>

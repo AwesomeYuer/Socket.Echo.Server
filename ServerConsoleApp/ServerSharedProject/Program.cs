@@ -11,9 +11,9 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(RuntimeInformation.OSArchitecture.ToString());
-            Console.WriteLine(RuntimeInformation.OSDescription);
-            Console.WriteLine(RuntimeInformation.FrameworkDescription);
+            //Console.WriteLine(RuntimeInformation.OSArchitecture.ToString());
+            //Console.WriteLine(RuntimeInformation.OSDescription);
+            //Console.WriteLine(RuntimeInformation.FrameworkDescription);
             Console.Title = "Server";
             IPAddress ipa;
             IPAddress.TryParse("127.0.0.1", out ipa);
@@ -26,7 +26,7 @@
                                 new IPEndPoint(ipa, 18180)
                                 , (x, y) =>
                                 {
-                                    var s = Encoding.UTF8.GetString(y);
+                                    var s = Encoding.Default.GetString(y);
                                     Console.Write(s);
                                     s = string
                                             .Format
@@ -35,10 +35,11 @@
                                                     , "\r\n"
                                                     , s
                                                     , DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")
-                                                    , RuntimeInformation.OSDescription
+                                                    , ""
                                                 );
-                                    var buffer = Encoding.UTF8.GetBytes(s);
-                                    byte[] intBytes = BytesHelper.GetLengthHeaderBytes(y);
+                                    Console.WriteLine(s);
+                                    var buffer = Encoding.Default.GetBytes(s);
+                                    byte[] intBytes = BytesHelper.GetLengthHeaderBytes(buffer);
                                     x.SendDataSync(intBytes);
                                     x.SendDataSync(buffer);
                                 }

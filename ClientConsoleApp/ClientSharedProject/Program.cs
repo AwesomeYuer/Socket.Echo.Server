@@ -22,7 +22,7 @@ namespace Client
             var ipep = new IPEndPoint(ipa, 18180);
             socket.Connect(ipep);
 
-            Console.ReadLine();
+            //Console.ReadLine();
             var handler = new SocketAsyncDataHandler<string>
                                                         (
                                                             socket
@@ -51,7 +51,7 @@ namespace Client
                                     }
                                     , (x, y, z) =>
                                     {
-                                        var s = Encoding.UTF8.GetString(y);
+                                        var s = Encoding.Default.GetString(y);
                                         //Console.WriteLine("SocketID: {1}{0}Length: {2}{0}Data: {2}", "\r\n", x.SocketID, y.Length ,s);
                                         Console.Write(s);
                                         return true;
