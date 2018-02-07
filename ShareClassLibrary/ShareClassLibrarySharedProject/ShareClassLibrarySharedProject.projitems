@@ -10,7 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BytesHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SocketAsyncDataHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SocketAsyncDataHandler.TCP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SocketAsyncDataHandler.UDP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TryCatchFinallyProcessHelper.cs" />
   </ItemGroup>
 </Project>
