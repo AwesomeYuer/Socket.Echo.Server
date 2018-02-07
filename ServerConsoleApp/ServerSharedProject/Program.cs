@@ -1,33 +1,30 @@
 ﻿namespace Server
 {
+    using Microshaoft;
     using System;
     using System.Net;
     using System.Runtime.InteropServices;
     using System.Text;
-
-    using Microshaoft;
-
     class Program
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine(RuntimeInformation.OSArchitecture.ToString());
-            //Console.WriteLine(RuntimeInformation.OSDescription);
-            //Console.WriteLine(RuntimeInformation.FrameworkDescription);
+#if NETCOREAPP2_0
+            Console.WriteLine(RuntimeInformation.OSArchitecture.ToString());
+            Console.WriteLine(RuntimeInformation.OSDescription);
+            Console.WriteLine(RuntimeInformation.FrameworkDescription);
+# endif
             Console.Title = "Server";
             IPAddress ipa;
             IPAddress.TryParse("127.0.0.1", out ipa);
-            var receiveEncoding = Encoding.Default;
+            var receiveEncoding = Encoding.UTF8;
             var sendEncoding = Encoding.UTF8;
-            sendEncoding = Encoding.Default;
-            var decoder = receiveEncoding.GetDecoder();
             var es = new EchoServer<string>
                             (
                                 new IPEndPoint(ipa, 18180)
                                 , (x, y) =>
                                 {
-                                    var s = Encoding.Default.GetString(y);
-                                    Console.Write(s);
+                                    var s = receiveEncoding.GetString(y);
                                     s = string
                                             .Format
                                                 (
@@ -38,7 +35,7 @@
                                                     , ""
                                                 );
                                     Console.WriteLine(s);
-                                    var buffer = Encoding.Default.GetBytes(s);
+                                    var buffer = sendEncoding.GetBytes(s);
                                     byte[] intBytes = BytesHelper.GetLengthHeaderBytes(buffer);
                                     x.SendDataSync(intBytes);
                                     x.SendDataSync(buffer);

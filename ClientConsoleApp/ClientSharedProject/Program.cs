@@ -1,12 +1,11 @@
 ﻿//Client.cs
 namespace Client
 {
+    using Microshaoft;
     using System;
     using System.Net;
     using System.Net.Sockets;
     using System.Text;
-    using System.Threading;
-    using Microshaoft;
     class Class1
     {
         static void Main(string[] args)
@@ -28,35 +27,35 @@ namespace Client
                                                             socket
                                                             , 1
                                                         );
-            var sendEncoding = Encoding.Default;
+            var sendEncoding = Encoding.UTF8;
             var receiveEncoding = Encoding.UTF8;
-            receiveEncoding = Encoding.Default;
-            var decoder = receiveEncoding.GetDecoder();
-            handler.StartReceiveWholeDataPackets
-                                (
+
+            handler
+                .StartReceiveWholeDataPackets
+                    (
                                     
-                                     4
-                                    , 0
-                                    , 4
-                                    , () =>
-                                    {
-                                        var saea = new SocketAsyncEventArgs();
-                                        saea.SetBuffer
-                                                (
-                                                    new byte[64 * 1024]
-                                                    , 0
-                                                    , 64 * 1024
-                                                );
-                                        return saea;
-                                    }
-                                    , (x, y, z) =>
-                                    {
-                                        var s = Encoding.Default.GetString(y);
-                                        //Console.WriteLine("SocketID: {1}{0}Length: {2}{0}Data: {2}", "\r\n", x.SocketID, y.Length ,s);
-                                        Console.Write(s);
-                                        return true;
-                                    }
-                                );
+                        4
+                        , 0
+                        , 4
+                        , () =>
+                        {
+                            var saea = new SocketAsyncEventArgs();
+                            saea.SetBuffer
+                                    (
+                                        new byte[64 * 1024]
+                                        , 0
+                                        , 64 * 1024
+                                    );
+                            return saea;
+                        }
+                        , (x, y, z) =>
+                        {
+                            var s = receiveEncoding.GetString(y);
+                            //Console.WriteLine("SocketID: {1}{0}Length: {2}{0}Data: {2}", "\r\n", x.SocketID, y.Length ,s);
+                            Console.Write(s);
+                            return true;
+                        }
+                    );
             string input = string.Empty;
             while ((input = Console.ReadLine()) != "q")
             {

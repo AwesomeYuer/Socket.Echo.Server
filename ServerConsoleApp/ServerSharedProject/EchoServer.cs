@@ -1,10 +1,9 @@
 ﻿namespace Server
 {
+    using Microshaoft;
     using System;
     using System.Net;
     using System.Net.Sockets;
-    using System.Text;
-    using Microshaoft;
     class EchoServer<T>
     {
         //Socket _socketListener;
@@ -44,35 +43,38 @@
             var client = e.AcceptSocket;
             var listener = sender as Socket;
             AcceptSocketAsync(listener);
-            Console.WriteLine("Accepted");
+            
             var handler = new SocketAsyncDataHandler<T>
                                     (
                                         client
                                         , _socketID++
                                     );
-            handler.StartReceiveWholeDataPackets
-                                (
-                                    4           //header bytes length
-                                    , 0         //header bytes offset
-                                    , 4         //header bytes count
-                                    ,() =>
-                                    {
-                                        var saea = new SocketAsyncEventArgs();
-                                        saea
-                                            .SetBuffer
-                                                (
-                                                    new byte[64*1024]
-                                                    , 0
-                                                    , 64 * 1024
-                                                );
-                                        return saea;
-                                    }
-                                    , (x, y, z) =>
-                                    {
-                                        _onReceivedDataProcessAction?.Invoke(x, y);
-                                        return true;
-                                    }
-                                );
+
+            Console.WriteLine("Accepted Socket:[{0}] @ [{1}]", _socketID, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            handler
+                .StartReceiveWholeDataPackets
+                    (
+                        4           //header bytes length
+                        , 0         //header bytes offset
+                        , 4         //header bytes count
+                        ,() =>
+                        {
+                            var saea = new SocketAsyncEventArgs();
+                            saea
+                                .SetBuffer
+                                    (
+                                        new byte[64*1024]
+                                        , 0
+                                        , 64 * 1024
+                                    );
+                            return saea;
+                        }
+                        , (x, y, z) =>
+                        {
+                            _onReceivedDataProcessAction?.Invoke(x, y);
+                            return true;
+                        }
+                    );
         }
     }
 }
