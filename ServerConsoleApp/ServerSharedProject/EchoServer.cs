@@ -52,14 +52,14 @@
                                     );
             handler.StartReceiveWholeDataPackets
                                 (
-                                   
-                                     4
-                                    , 0
-                                    , 4
+                                    4           //header bytes length
+                                    , 0         //header bytes offset
+                                    , 4         //header bytes count
                                     ,() =>
                                     {
                                         var saea = new SocketAsyncEventArgs();
-                                        saea.SetBuffer
+                                        saea
+                                            .SetBuffer
                                                 (
                                                     new byte[64*1024]
                                                     , 0

@@ -204,14 +204,15 @@
                         ReceiveSocketAsyncEventArgs.Offset != HeaderBytesLength
                     )
                 {
-                    ReceiveSocketAsyncEventArgs.SetBuffer
-                                                    (
-                                                        0
-                                                        , HeaderBytesLength
-                                                    );
+                    ReceiveSocketAsyncEventArgs
+                                            .SetBuffer
+                                                (
+                                                    0
+                                                    , HeaderBytesLength
+                                                );
                 }
                 ReceiveSocketAsyncEventArgs
-                                .Completed += 
+                                .Completed +=
                                     (
                                         (sender, e) =>
                                         {
@@ -225,6 +226,7 @@
                                                 if (r < l)
                                                 {
                                                     p += r;
+                                                    // issue: reset buffer's Offset property and Count Property
                                                     e.SetBuffer(p, l - r);
                                                 }
                                                 else if (r == l)
@@ -232,30 +234,39 @@
                                                     if (_isHeader)
                                                     {
                                                         byte[] data = new byte[headerBytesCount];
-                                                        Buffer.BlockCopy
-                                                                    (
-                                                                        buffer
-                                                                        , HeaderBytesOffset
-                                                                        , data
-                                                                        , 0
-                                                                        , data.Length
-                                                                    );
+                                                        Buffer
+                                                            .BlockCopy
+                                                                (
+                                                                    buffer
+                                                                    , HeaderBytesOffset
+                                                                    , data
+                                                                    , 0
+                                                                    , data.Length
+                                                                );
                                                         byte[] intBytes = new byte[4];
-                                                        l = (intBytes.Length < HeaderBytesCount ? intBytes.Length : HeaderBytesCount);
-                                                        Buffer.BlockCopy
-                                                                    (
-                                                                        data
-                                                                        , 0
-                                                                        , intBytes
-                                                                        , 0
-                                                                        , l
-                                                                    );
+                                                        l =
+                                                                (
+                                                                    intBytes.Length < HeaderBytesCount
+                                                                    ?
+                                                                    intBytes.Length
+                                                                    :
+                                                                    HeaderBytesCount
+                                                                );
+                                                        Buffer
+                                                            .BlockCopy
+                                                                (
+                                                                    data
+                                                                    , 0
+                                                                    , intBytes
+                                                                    , 0
+                                                                    , l
+                                                                );
                                                         //Array.Reverse(intBytes);
                                                         bodyLength = BitConverter.ToInt32(intBytes, 0);
-                                                        p += r;
+                                                                        p += r;
+                                                        // issue: reset buffer's Offset property and Count Property
                                                         e.SetBuffer(p, bodyLength);
-                                                        Console.WriteLine(bodyLength);
-                                                        _isHeader = false;
+                                                                        _isHeader = false;
                                                     }
                                                     else
                                                     {
@@ -271,14 +282,15 @@
                                                                     , data.Length
                                                                 );
                                                         _isHeader = true;
+                                                        // issue: reset buffer's Offset property and Count Property
                                                         e.SetBuffer(0, HeaderBytesLength);
-                                                        onOneWholeDataPacketReceivedProcessFunc?
-                                                                .Invoke
-                                                                    (
-                                                                        this
-                                                                        , data
-                                                                        , e
-                                                                    );
+                                                                        onOneWholeDataPacketReceivedProcessFunc?
+                                                                            .Invoke
+                                                                                (
+                                                                                    this
+                                                                                    , data
+                                                                                    , e
+                                                                                );
                                                     }
                                                 }
                                                 else
@@ -308,6 +320,7 @@
                                                         else
                                                         {
                                                             _isHeader = true;
+                                                            // issue: reset buffer's Offset property and Count Property
                                                             e.SetBuffer(0, HeaderBytesLength);
                                                         }
                                                     }
@@ -317,6 +330,9 @@
                                             {
                                                 try
                                                 {
+                                                    // loop ReceiveAsync
+                                                    // issue: after reset SocketAsyncEventArgs.Buffer's offset property and count property
+                                                    // , can't raise completed event
                                                     socket.ReceiveAsync(e);
                                                 }
                                                 catch (Exception exception)
@@ -325,11 +341,11 @@
                                                     if (onCaughtExceptionProcessFunc != null)
                                                     {
                                                         r = onCaughtExceptionProcessFunc
-                                                                    (
-                                                                        this
-                                                                        , e
-                                                                        , exception
-                                                                    );
+                                                    (
+                                                        this
+                                                        , e
+                                                        , exception
+                                                    );
                                                     }
                                                     if (r)
                                                     {
@@ -375,8 +391,6 @@
         {
             var length = data.Length;
             var sentOffset = 0;
-            //SocketError socketError; 
-            //socketError = SocketError.Success;
             if (!_isUdp)
             {
                 lock (_sendSyncLockObject)
