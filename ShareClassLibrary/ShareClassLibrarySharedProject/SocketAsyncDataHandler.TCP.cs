@@ -211,165 +211,168 @@
                                                     , HeaderBytesLength
                                                 );
                 }
-                ReceiveSocketAsyncEventArgs
-                                .Completed +=
-                                    (
-                                        (sender, e) =>
+
+                _receiveSocketAsyncEventArgsCompletedEventHandlerProcessAction
+                        = 
+                        (
+                            (sender, e) =>
+                            {
+                                var socket = sender as Socket;
+                                if (e.BytesTransferred >= 0)
+                                {
+                                    byte[] buffer = e.Buffer;
+                                    int r = e.BytesTransferred;
+                                    int p = e.Offset;
+                                    int l = e.Count;
+                                    if (r < l)
+                                    {
+                                        p += r;
+                                        // issue: reset buffer's Offset property and Count Property
+                                        e.SetBuffer(p, l - r);
+                                    }
+                                    else if (r == l)
+                                    {
+                                        if (_isHeader)
                                         {
-                                            var socket = sender as Socket;
-                                            if (e.BytesTransferred >= 0)
-                                            {
-                                                byte[] buffer = e.Buffer;
-                                                int r = e.BytesTransferred;
-                                                int p = e.Offset;
-                                                int l = e.Count;
-                                                if (r < l)
-                                                {
-                                                    p += r;
-                                                    // issue: reset buffer's Offset property and Count Property
-                                                    e.SetBuffer(p, l - r);
-                                                }
-                                                else if (r == l)
-                                                {
-                                                    if (_isHeader)
-                                                    {
-                                                        byte[] data = new byte[headerBytesCount];
-                                                        Buffer
-                                                            .BlockCopy
-                                                                (
-                                                                    buffer
-                                                                    , HeaderBytesOffset
-                                                                    , data
-                                                                    , 0
-                                                                    , data.Length
-                                                                );
-                                                        byte[] intBytes = new byte[4];
-                                                        l =
-                                                                (
-                                                                    intBytes.Length < HeaderBytesCount
-                                                                    ?
-                                                                    intBytes.Length
-                                                                    :
-                                                                    HeaderBytesCount
-                                                                );
-                                                        Buffer
-                                                            .BlockCopy
-                                                                (
-                                                                    data
-                                                                    , 0
-                                                                    , intBytes
-                                                                    , 0
-                                                                    , l
-                                                                );
-                                                        //Array.Reverse(intBytes);
-                                                        bodyLength = BitConverter.ToInt32(intBytes, 0);
-                                                                        p += r;
-                                                        // issue: reset buffer's Offset property and Count Property
-                                                        e.SetBuffer(p, bodyLength);
-                                                                        _isHeader = false;
-                                                    }
-                                                    else
-                                                    {
-                                                        byte[] data = new byte[bodyLength + HeaderBytesLength];
-                                                        bodyLength = 0;
-                                                        Buffer
-                                                            .BlockCopy
-                                                                (
-                                                                    buffer
-                                                                    , 0
-                                                                    , data
-                                                                    , 0
-                                                                    , data.Length
-                                                                );
-                                                        _isHeader = true;
-                                                        // issue: reset buffer's Offset property and Count Property
-                                                        e.SetBuffer(0, HeaderBytesLength);
-                                                                        onOneWholeDataPacketReceivedProcessFunc?
-                                                                            .Invoke
-                                                                                (
-                                                                                    this
-                                                                                    , data
-                                                                                    , e
-                                                                                );
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    if (onReceivedDataPacketErrorProcessFunc != null)
-                                                    {
-                                                        byte[] data = new byte[p + r + HeaderBytesLength];
-                                                        Buffer
-                                                            .BlockCopy
-                                                                (
-                                                                    buffer
-                                                                    , 0
-                                                                    , data
-                                                                    , 0
-                                                                    , data.Length
-                                                                );
-                                                        bool b = onReceivedDataPacketErrorProcessFunc
-                                                                    (
-                                                                        this
-                                                                        , data
-                                                                        , e
-                                                                    );
-                                                        if (b)
-                                                        {
-                                                            bool i = DestoryWorkingSocket();
-                                                        }
-                                                        else
-                                                        {
-                                                            _isHeader = true;
-                                                            // issue: reset buffer's Offset property and Count Property
-                                                            e.SetBuffer(0, HeaderBytesLength);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if (!_isWorkingSocketDestoryed)
-                                            {
-                                                try
-                                                {
-                                                    // loop ReceiveAsync
-                                                    // issue: after reset SocketAsyncEventArgs.Buffer's offset property and count property
-                                                    // , can't raise completed event
-                                                    //socket.ReceiveAsync(e);
-                                                    ReceiveAsyncCompleted(_socket, ReceiveSocketAsyncEventArgs);
-                                                }
-                                                catch (Exception exception)
-                                                {
-                                                    var r = false;
-                                                    if (onCaughtExceptionProcessFunc != null)
-                                                    {
-                                                        r = onCaughtExceptionProcessFunc
+                                            byte[] data = new byte[headerBytesCount];
+                                            Buffer
+                                                .BlockCopy
+                                                    (
+                                                        buffer
+                                                        , HeaderBytesOffset
+                                                        , data
+                                                        , 0
+                                                        , data.Length
+                                                    );
+                                            byte[] intBytes = new byte[4];
+                                            l =
+                                                    (
+                                                        intBytes.Length < HeaderBytesCount
+                                                        ?
+                                                        intBytes.Length
+                                                        :
+                                                        HeaderBytesCount
+                                                    );
+                                            Buffer
+                                                .BlockCopy
+                                                    (
+                                                        data
+                                                        , 0
+                                                        , intBytes
+                                                        , 0
+                                                        , l
+                                                    );
+                                            //Array.Reverse(intBytes);
+                                            bodyLength = BitConverter.ToInt32(intBytes, 0);
+                                            p += r;
+                                            // issue: reset buffer's Offset property and Count Property
+                                            e.SetBuffer(p, bodyLength);
+                                            _isHeader = false;
+                                        }
+                                        else
+                                        {
+                                            byte[] data = new byte[bodyLength + HeaderBytesLength];
+                                            bodyLength = 0;
+                                            Buffer
+                                                .BlockCopy
+                                                    (
+                                                        buffer
+                                                        , 0
+                                                        , data
+                                                        , 0
+                                                        , data.Length
+                                                    );
+                                            _isHeader = true;
+                                            // issue: reset buffer's Offset property and Count Property
+                                            e.SetBuffer(0, HeaderBytesLength);
+                                            onOneWholeDataPacketReceivedProcessFunc?
+                                                .Invoke
                                                     (
                                                         this
+                                                        , data
                                                         , e
-                                                        , exception
                                                     );
-                                                    }
-                                                    if (r)
-                                                    {
-                                                        DestoryWorkingSocket();
-                                                    }
-                                                }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (onReceivedDataPacketErrorProcessFunc != null)
+                                        {
+                                            byte[] data = new byte[p + r + HeaderBytesLength];
+                                            Buffer
+                                                .BlockCopy
+                                                    (
+                                                        buffer
+                                                        , 0
+                                                        , data
+                                                        , 0
+                                                        , data.Length
+                                                    );
+                                            bool b = onReceivedDataPacketErrorProcessFunc
+                                                        (
+                                                            this
+                                                            , data
+                                                            , e
+                                                        );
+                                            if (b)
+                                            {
+                                                bool i = DestoryWorkingSocket();
+                                            }
+                                            else
+                                            {
+                                                _isHeader = true;
+                                                // issue: reset buffer's Offset property and Count Property
+                                                e.SetBuffer(0, HeaderBytesLength);
                                             }
                                         }
-                                    );
+                                    }
+                                }
+                                if (!_isWorkingSocketDestoryed)
+                                {
+                                    try
+                                    {
+                                        // loop ReceiveAsync
+                                        // issue: after reset SocketAsyncEventArgs.Buffer's offset property and count property
+                                        // , can't raise completed event
+                                        //socket.ReceiveAsync(e);
+                                        ReceiveAsyncTriggerCompletedEvent(_socket, ReceiveSocketAsyncEventArgs);
+                                    }
+                                    catch (Exception exception)
+                                    {
+                                        var r = false;
+                                        if (onCaughtExceptionProcessFunc != null)
+                                        {
+                                            r = onCaughtExceptionProcessFunc
+                                        (
+                                            this
+                                            , e
+                                            , exception
+                                        );
+                                        }
+                                        if (r)
+                                        {
+                                            DestoryWorkingSocket();
+                                        }
+                                    }
+                                }
+                            }
+                        );
+
+                ReceiveSocketAsyncEventArgs
+                                .Completed += _receiveSocketAsyncEventArgsCompletedEventHandlerProcessAction;
                 //_socket.ReceiveAsync(ReceiveSocketAsyncEventArgs);
-                ReceiveAsyncCompleted(_socket, ReceiveSocketAsyncEventArgs);
+                ReceiveAsyncTriggerCompletedEvent(_socket, ReceiveSocketAsyncEventArgs);
                 _isStartedReceiveData = true;
             }
             return _isStartedReceiveData;
         }
-
-
-        private void ReceiveAsyncCompleted(Socket socket, SocketAsyncEventArgs socketAsyncEventArgs)
+        
+        private void ReceiveAsyncTriggerCompletedEvent(Socket socket, SocketAsyncEventArgs socketAsyncEventArgs)
         {
             var willRaiseEvent = false;
             do
             {
-                r = socket.ReceiveAsync(ReceiveSocketAsyncEventArgs);
+                willRaiseEvent = socket.ReceiveAsync(ReceiveSocketAsyncEventArgs);
             }
             while (!willRaiseEvent);
         }
