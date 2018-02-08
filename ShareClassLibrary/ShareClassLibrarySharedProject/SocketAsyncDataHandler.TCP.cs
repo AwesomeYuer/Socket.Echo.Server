@@ -333,7 +333,8 @@
                                                     // loop ReceiveAsync
                                                     // issue: after reset SocketAsyncEventArgs.Buffer's offset property and count property
                                                     // , can't raise completed event
-                                                    socket.ReceiveAsync(e);
+                                                    //socket.ReceiveAsync(e);
+                                                    ReceiveAsyncCompleted(_socket, ReceiveSocketAsyncEventArgs);
                                                 }
                                                 catch (Exception exception)
                                                 {
@@ -355,12 +356,24 @@
                                             }
                                         }
                                     );
-                _socket.ReceiveAsync(ReceiveSocketAsyncEventArgs);
+                //_socket.ReceiveAsync(ReceiveSocketAsyncEventArgs);
+                ReceiveAsyncCompleted(_socket, ReceiveSocketAsyncEventArgs);
                 _isStartedReceiveData = true;
             }
             return _isStartedReceiveData;
         }
-        
+
+
+        private void ReceiveAsyncCompleted(Socket socket, SocketAsyncEventArgs socketAsyncEventArgs)
+        {
+            var willRaiseEvent = false;
+            do
+            {
+                r = socket.ReceiveAsync(ReceiveSocketAsyncEventArgs);
+            }
+            while (!willRaiseEvent);
+        }
+
         private bool _isWorkingSocketDestoryed = false;
         public bool DestoryWorkingSocket()
         {
