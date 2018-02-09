@@ -3,8 +3,10 @@
     using Microshaoft;
     using System;
     using System.Net;
-    using System.Runtime.InteropServices;
     using System.Text;
+#if NETCOREAPP2_0
+    using System.Runtime.InteropServices;
+#endif
     class Program
     {
         static void Main(string[] args)
@@ -13,7 +15,7 @@
             Console.WriteLine(RuntimeInformation.OSArchitecture.ToString());
             Console.WriteLine(RuntimeInformation.OSDescription);
             Console.WriteLine(RuntimeInformation.FrameworkDescription);
-# endif
+#endif
             Console.Title = "Server";
             IPAddress ipa;
             IPAddress.TryParse("127.0.0.1", out ipa);
@@ -35,6 +37,15 @@
                                                     , ""
                                                 );
                                     Console.WriteLine(s);
+                                    Console.WriteLine($"Server ReceivedAsyncCount: {x.ReceivedAsyncCount}");
+                                    Console.WriteLine($"Server ReceivedSyncCount: {x.ReceivedSyncCount}");
+                                    Console.WriteLine($"Server ReceivedCount: {x.ReceivedCount}");
+
+                                    Console.WriteLine($"Server ReceivedHeadersCount: {x.ReceivedHeadersCount}");
+                                    Console.WriteLine($"Server ReceivedBodysCount: {x.ReceivedBodysCount}");
+
+                                    Console.WriteLine($"Server ReceivedTotalBytesCount: {x.ReceivedTotalBytesCount} bytes");
+
                                     var buffer = sendEncoding.GetBytes(s);
                                     byte[] intBytes = BytesHelper.GetLengthHeaderBytes(buffer);
                                     x.SendDataSync(intBytes);

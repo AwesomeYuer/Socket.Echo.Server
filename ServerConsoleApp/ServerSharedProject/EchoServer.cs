@@ -33,13 +33,25 @@
         private void AcceptSocketAsync(Socket listener)
         {
             var acceptSocketAsyncEventArgs = new SocketAsyncEventArgs();
-            acceptSocketAsyncEventArgs.Completed += acceptSocketAsyncEventArgs_AcceptOneCompleted;
-            listener.AcceptAsync(acceptSocketAsyncEventArgs);
+            acceptSocketAsyncEventArgs.Completed += acceptSocketAsyncEventArgs_AcceptOnceCompleted;
+            var r = listener.AcceptAsync(acceptSocketAsyncEventArgs);
+            if (!r)
+            {
+                if (acceptSocketAsyncEventArgs.BytesTransferred > 0)
+                {
+                    acceptSocketAsyncEventArgs_AcceptOnceCompleted
+                        (
+                            acceptSocketAsyncEventArgs
+                            , acceptSocketAsyncEventArgs
+                        );
+                }
+            }
+
         }
         private int _socketID = 0;
-        void acceptSocketAsyncEventArgs_AcceptOneCompleted(object sender, SocketAsyncEventArgs e)
+        void acceptSocketAsyncEventArgs_AcceptOnceCompleted(object sender, SocketAsyncEventArgs e)
         {
-            e.Completed -= acceptSocketAsyncEventArgs_AcceptOneCompleted;
+            e.Completed -= acceptSocketAsyncEventArgs_AcceptOnceCompleted;
             var client = e.AcceptSocket;
             var listener = sender as Socket;
             AcceptSocketAsync(listener);

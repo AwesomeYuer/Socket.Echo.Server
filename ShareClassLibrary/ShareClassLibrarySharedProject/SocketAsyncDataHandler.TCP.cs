@@ -93,12 +93,57 @@
             get;
             private set;
         }
+
+
+        private long _receivedHeadersCount = 0;
+        public long ReceivedHeadersCount
+        {
+            get
+            {
+                return _receivedHeadersCount;
+            }
+        }
+        private long _receivedBodysCount = 0;
+        public long ReceivedBodysCount
+        {
+            get
+            {
+                return _receivedBodysCount;
+            }
+        }
+
+        private long _receivedBytesCount = 0;
+        public long ReceivedTotalBytesCount
+        {
+            get
+            {
+                return _receivedBytesCount;
+            }
+        }
         private long _receivedCount = 0;
         public long ReceivedCount
         {
             get
             {
                 return _receivedCount;
+            }
+        }
+
+        private long _receivedAsyncCount = 0;
+        public long ReceivedAsyncCount
+        {
+            get
+            {
+                return _receivedAsyncCount;
+            }
+        }
+        
+        private long _receivedSyncCount = 0;
+        public long ReceivedSyncCount
+        {
+            get
+            {
+                return _receivedSyncCount;
             }
         }
         public int HeaderBytesCount
@@ -224,6 +269,7 @@
                                     int r = e.BytesTransferred;
                                     int p = e.Offset;
                                     int l = e.Count;
+                                    Interlocked.Add(ref _receivedBytesCount, r);
                                     if (r < l)
                                     {
                                         p += r;
@@ -234,6 +280,7 @@
                                     {
                                         if (_isHeader)
                                         {
+                                            Interlocked.Increment(ref _receivedHeadersCount);
                                             byte[] data = new byte[headerBytesCount];
                                             Buffer
                                                 .BlockCopy
@@ -271,6 +318,7 @@
                                         }
                                         else
                                         {
+                                            Interlocked.Increment(ref _receivedBodysCount);
                                             byte[] data = new byte[bodyLength + HeaderBytesLength];
                                             bodyLength = 0;
                                             Buffer
@@ -285,6 +333,7 @@
                                             _isHeader = true;
                                             // issue: reset buffer's Offset property and Count Property
                                             e.SetBuffer(0, HeaderBytesLength);
+
                                             onOneWholeDataPacketReceivedProcessFunc?
                                                 .Invoke
                                                     (
@@ -335,7 +384,12 @@
                                         // issue: after reset SocketAsyncEventArgs.Buffer's offset property and count property
                                         // , can't raise completed event
                                         //socket.ReceiveAsync(e);
-                                        ReceiveAsyncTriggerCompletedEvent(_socket, ReceiveSocketAsyncEventArgs);
+                                        ReceiveAsyncTriggerCompletedEventOnce
+                                            (
+                                                _socket
+                                                , ReceiveSocketAsyncEventArgs
+                                                , _receiveSocketAsyncEventArgsCompletedEventHandlerProcessAction
+                                            );
                                     }
                                     catch (Exception exception)
                                     {
@@ -361,20 +415,40 @@
                 ReceiveSocketAsyncEventArgs
                                 .Completed += _receiveSocketAsyncEventArgsCompletedEventHandlerProcessAction;
                 //_socket.ReceiveAsync(ReceiveSocketAsyncEventArgs);
-                ReceiveAsyncTriggerCompletedEvent(_socket, ReceiveSocketAsyncEventArgs);
+                ReceiveAsyncTriggerCompletedEventOnce
+                            (
+                                _socket
+                                , ReceiveSocketAsyncEventArgs
+                                , _receiveSocketAsyncEventArgsCompletedEventHandlerProcessAction
+                            );
                 _isStartedReceiveData = true;
             }
             return _isStartedReceiveData;
         }
         
-        private void ReceiveAsyncTriggerCompletedEvent(Socket socket, SocketAsyncEventArgs socketAsyncEventArgs)
+        private void ReceiveAsyncTriggerCompletedEventOnce
+                            (
+                                Socket socket
+                                , SocketAsyncEventArgs socketAsyncEventArgs
+                                , EventHandler<SocketAsyncEventArgs> onCompleted
+                            )
         {
-            var willRaiseEvent = false;
-            do
+            Interlocked.Increment(ref _receivedCount);
+            bool r = socket.ReceiveAsync(socketAsyncEventArgs);
+            if (!r)
             {
-                willRaiseEvent = socket.ReceiveAsync(ReceiveSocketAsyncEventArgs);
+                Interlocked.Increment(ref _receivedSyncCount);
+                Console.WriteLine($"Explicitly: TriggerCompletedEvent Times: {_receivedSyncCount} @ {DateTime.Now:yyyy-MM-dd HH:mm.ss.fff}");
+                if (socketAsyncEventArgs.BytesTransferred > 0)
+                {
+                    onCompleted(socket, socketAsyncEventArgs);
+                }
             }
-            while (!willRaiseEvent);
+            else
+            {
+                Interlocked.Increment(ref _receivedAsyncCount);
+                Console.WriteLine($"Implicitly: TriggerCompletedEvent Times: {_receivedAsyncCount} @ {DateTime.Now:yyyy-MM-dd HH:mm.ss.fff}");
+            }
         }
 
         private bool _isWorkingSocketDestoryed = false;
@@ -384,7 +458,6 @@
             try
             {
                 ReceiveSocketAsyncEventArgs.Completed -= _receiveSocketAsyncEventArgsCompletedEventHandlerProcessAction;
-
                 if (_socket.Connected)
                 {
                     _socket.Disconnect(false);

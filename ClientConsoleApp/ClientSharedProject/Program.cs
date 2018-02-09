@@ -6,10 +6,20 @@ namespace Client
     using System.Net;
     using System.Net.Sockets;
     using System.Text;
+#if NETCOREAPP2_0
+    using System.Runtime.InteropServices;
+#endif
     class Class1
     {
         static void Main(string[] args)
         {
+
+#if NETCOREAPP2_0
+            Console.WriteLine(RuntimeInformation.OSArchitecture.ToString());
+            Console.WriteLine(RuntimeInformation.OSDescription);
+            Console.WriteLine(RuntimeInformation.FrameworkDescription);
+#endif
+
             Console.Title = "Client";
             var ipa = IPAddress.Parse("127.0.0.1");
             var socket = new Socket
