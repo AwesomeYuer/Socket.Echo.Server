@@ -397,11 +397,11 @@
                                         if (onCaughtExceptionProcessFunc != null)
                                         {
                                             r = onCaughtExceptionProcessFunc
-                                        (
-                                            this
-                                            , e
-                                            , exception
-                                        );
+                                                    (
+                                                        this
+                                                        , e
+                                                        , exception
+                                                    );
                                         }
                                         if (r)
                                         {
@@ -488,15 +488,14 @@
                     {
                         try
                         {
-                            sentOffset +=
-                                            _socket
+                            sentOffset += _socket
                                                 .Send
                                                     (
                                                         data
                                                         , sentOffset
                                                         , length - sentOffset
                                                         , SocketFlags.None
-                                                    //, out socketError
+                                                        //, out socketError
                                                     );
                         }
                         catch //(SocketException se)
