@@ -439,7 +439,7 @@
             {
                 Interlocked.Increment(ref _receivedSyncCount);
                 Console.WriteLine($"Explicitly: TriggerCompletedEvent Times: {_receivedSyncCount} @ {DateTime.Now:yyyy-MM-dd HH:mm.ss.fff}");
-                if (socketAsyncEventArgs.BytesTransferred > 0)
+                if (socketAsyncEventArgs.BytesTransferred > 0) //avoid stack overflow exception
                 {
                     onCompleted(socket, socketAsyncEventArgs);
                 }
