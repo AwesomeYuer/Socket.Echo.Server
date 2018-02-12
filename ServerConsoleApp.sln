@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareClassLibrary.Framework
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientConsoleApp.Framework", "ClientConsoleApp\ClientConsoleApp.Framework\ClientConsoleApp.Framework.csproj", "{53AB334D-022F-485E-A755-FE59B38DB953}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D5C44E92-53C5-4C96-8C5F-607DA6DAA70A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ShareClassLibrary\ShareClassLibrarySharedProject\ShareClassLibrarySharedProject.projitems*{1bf4fda8-a439-4f5a-a2fc-883c00d695fe}*SharedItemsImports = 13
@@ -71,6 +73,10 @@ Global
 		{53AB334D-022F-485E-A755-FE59B38DB953}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53AB334D-022F-485E-A755-FE59B38DB953}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53AB334D-022F-485E-A755-FE59B38DB953}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5C44E92-53C5-4C96-8C5F-607DA6DAA70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5C44E92-53C5-4C96-8C5F-607DA6DAA70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5C44E92-53C5-4C96-8C5F-607DA6DAA70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5C44E92-53C5-4C96-8C5F-607DA6DAA70A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

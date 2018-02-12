@@ -9,9 +9,14 @@
     <Import_RootNamespace>ShareClassLibrarySharedProject</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BufferManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BytesHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EchoServer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.System.ServiceModel.Channels.SocketAsyncEventArgsPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SocketAsyncDataHandler.TCP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SocketAsyncDataHandler.UDP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SocketAsyncEventArgsPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SocketHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TryCatchFinallyProcessHelper.cs" />
   </ItemGroup>
 </Project>

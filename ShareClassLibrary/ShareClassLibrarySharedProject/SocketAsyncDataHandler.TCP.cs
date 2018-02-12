@@ -43,9 +43,9 @@
         {
             get
             {
-                return 
+                return
                     (
-                        (IPEndPoint) _socket.RemoteEndPoint
+                        (IPEndPoint)_socket.RemoteEndPoint
                     ).Address;
             }
         }
@@ -55,7 +55,7 @@
             {
                 return
                     (
-                        (IPEndPoint) _socket.LocalEndPoint
+                        (IPEndPoint)_socket.LocalEndPoint
                     ).Address;
             }
         }
@@ -137,7 +137,7 @@
                 return _receivedAsyncCount;
             }
         }
-        
+
         private long _receivedSyncCount = 0;
         public long ReceivedSyncCount
         {
@@ -258,7 +258,7 @@
                 }
 
                 _receiveSocketAsyncEventArgsCompletedEventHandlerProcessAction
-                        = 
+                        =
                         (
                             (sender, e) =>
                             {
@@ -425,7 +425,7 @@
             }
             return _isStartedReceiveData;
         }
-        
+
         private void ReceiveAsyncTriggerCompletedEventOnce
                             (
                                 Socket socket
@@ -434,6 +434,8 @@
                             )
         {
             Interlocked.Increment(ref _receivedCount);
+            // related Issue/Question:
+            //https://github.com/dotnet/corefx/issues/26917
             bool r = socket.ReceiveAsync(socketAsyncEventArgs);
             if (!r)
             {
@@ -496,7 +498,7 @@
                                                         , sentOffset
                                                         , length - sentOffset
                                                         , SocketFlags.None
-                                                        //, out socketError
+                                                    //, out socketError
                                                     );
                         }
                         catch //(SocketException se)
@@ -559,4 +561,3 @@
         }
     }
 }
-
